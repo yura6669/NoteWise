@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "306740350288",
+    "project_id": "notewise-2b046",
+    "storage_bucket": "notewise-2b046.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306740350288:android:440042f988b550d6dcb055",
+        "android_client_info": {
+          "package_name": "com.example.notewise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306740350288-roie2tnqiuekq3ob07a2me23infufma8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2HB7Gp8NM6cLqj7V5-Tf2mQ773U9SKvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306740350288-roie2tnqiuekq3ob07a2me23infufma8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "306740350288-camfmq4kibr13803omo92il0oje7v4ss.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.notewise"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
