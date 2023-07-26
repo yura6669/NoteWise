@@ -9,11 +9,11 @@ import 'package:notewise/modules/control_note/bloc/control_note_bloc.dart';
 import 'package:notewise/modules/control_note/widgets/add_image_btn.dart';
 import 'package:notewise/modules/control_note/widgets/change_note_btns.dart';
 import 'package:notewise/modules/control_note/widgets/control_note_app_bar.dart';
-import 'package:notewise/modules/control_note/widgets/add_note_btn.dart';
 import 'package:notewise/modules/control_note/widgets/control_note_form.dart';
 import 'package:notewise/modules/control_note/widgets/image_field.dart';
 import 'package:notewise/modules/resorses/app_colors.dart';
 import 'package:notewise/modules/resorses/utils.dart';
+import 'package:notewise/modules/widgets/custom_button.dart';
 import 'package:notewise/modules/widgets/custom_snack_bar.dart';
 
 class ControlNoteArgs {
@@ -117,16 +117,22 @@ class _ControlNoteScreenState extends State<ControlNoteScreen> {
               ),
               const Spacer(),
               if (widget.args.note == null)
-                AddNoteBtn(
-                  controlNoteKey: _controlNoteKey,
-                  text: _text,
-                  image: _image,
-                  userId: widget.args.user.id,
+                CustomButton(
+                  text: 'Add note',
+                  onTap: () {
+                    if (_controlNoteKey.currentState!.validate()) {
+                      _controlNoteBloc.addNote(
+                        userId: widget.args.user.id,
+                        text: _text.text,
+                        image: _image,
+                      );
+                    }
+                  },
                 ),
               if (widget.args.note != null)
                 ChangeNoteBtns(
                   controlNoteKey: _controlNoteKey,
-                  text: _text.text,
+                  text: _text,
                   image: _image,
                   userId: widget.args.user.id,
                   noteModel: widget.args.note!,

@@ -30,22 +30,9 @@ class FirebaseRepository extends IFirebaseRepository {
   }
 
   @override
-  Future<void> signOut() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updateEmail({required String newEmail}) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> updatePassword({
-    required String email,
-    required String oldPassword,
-    required String newPassword,
-  }) {
-    throw UnimplementedError();
+  Future<void> signOut() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.signOut();
   }
 }
 
@@ -61,14 +48,6 @@ abstract class IFirebaseRepository {
   });
 
   Future<void> restorePassword({required String email});
-
-  Future<void> updateEmail({required String newEmail});
-
-  Future<void> updatePassword({
-    required String email,
-    required String oldPassword,
-    required String newPassword,
-  });
 
   Future<void> signOut();
 }

@@ -26,6 +26,7 @@ class _AuthFormState extends State<ControlNoteForm> {
           color: Colors.black,
         ),
         maxLines: 5,
+        alignLabelWithHint: true,
       ),
     );
   }

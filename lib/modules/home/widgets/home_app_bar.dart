@@ -3,6 +3,7 @@ import 'package:notewise/core/models/user.dart';
 import 'package:notewise/modules/control_note/control_note_screen.dart';
 import 'package:notewise/modules/resorses/app_colors.dart';
 import 'package:notewise/modules/resorses/utils.dart';
+import 'package:notewise/modules/settings/settings_screen.dart';
 
 homeAppBar({
   required BuildContext context,
@@ -40,7 +41,11 @@ homeAppBar({
       ),
     ),
     leading: IconButton(
-      onPressed: () {},
+      onPressed: () => Navigator.pushNamed(
+        context,
+        SettingsScreen.routeName,
+        arguments: user.id,
+      ),
       icon: Icon(
         Icons.settings_outlined,
         size: Utils.adaptiveWidth(context, 7),

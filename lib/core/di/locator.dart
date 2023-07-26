@@ -7,6 +7,7 @@ import 'package:notewise/modules/control_note/bloc/control_note_bloc.dart';
 import 'package:notewise/modules/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:notewise/modules/home/bloc/home_bloc.dart';
 import 'package:notewise/modules/register/bloc/register_bloc.dart';
+import 'package:notewise/modules/settings/bloc/settings_bloc.dart';
 import 'package:notewise/modules/splash/bloc/splash_bloc.dart';
 
 GetIt locator = GetIt.instance;
@@ -54,6 +55,13 @@ void setupServiceLocator() {
   locator.registerFactory(() {
     return ControlNoteBloc(
       notesRepository: locator.get(),
+    );
+  });
+
+  locator.registerFactory(() {
+    return SettingsBloc(
+      userRepository: locator.get(),
+      firebaseRepository: locator.get(),
     );
   });
 }

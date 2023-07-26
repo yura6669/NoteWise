@@ -58,6 +58,20 @@ class UserRepository implements IUserRepository {
   }
 
   @override
+  Future<UserModel?> getUserById({required String userId}) {
+    final CollectionReference collection =
+        FirebaseFirestore.instance.collection('users');
+    final data = collection.doc(userId).get();
+    return data.then((value) {
+      final map = value.data() as Map<String, dynamic>?;
+      if (map != null) {
+        return UserModel.fromMap(map);
+      }
+      return null;
+    });
+  }
+
+  @override
   Future<void> saveUserToCache(UserModel user) async {
     final box = await _getBox();
     final map = user.toMap();
@@ -65,6 +79,7 @@ class UserRepository implements IUserRepository {
     return box.put(_institutionBox, json);
   }
 
+  @override
   Future<void> deleteInstitutionWithCash() async {
     var box = await _getBox();
     await box.delete(_institutionBox);
@@ -93,5 +108,9 @@ abstract class IUserRepository {
 
   Future<UserModel?> getUser(String email);
 
+  Future<UserModel?> getUserById({required String userId});
+
   Future<void> saveUserToCache(UserModel user);
+
+  Future<void> deleteInstitutionWithCash();
 }

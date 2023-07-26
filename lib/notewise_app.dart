@@ -11,6 +11,7 @@ import 'package:notewise/modules/forgot_password/forgot_password_screen.dart';
 import 'package:notewise/modules/home/home_screen.dart';
 import 'package:notewise/modules/register/register_screen.dart';
 import 'package:notewise/modules/resorses/app_colors.dart';
+import 'package:notewise/modules/settings/settings_screen.dart';
 import 'package:notewise/modules/splash/bloc/splash_bloc.dart';
 import 'package:notewise/modules/splash/splash_screen.dart';
 
@@ -76,6 +77,10 @@ class NoteWiseApp extends StatelessWidget {
                       case ControlNoteScreen.routeName:
                         return ControlNoteScreen(
                           args: settings.arguments as ControlNoteArgs,
+                        );
+                      case SettingsScreen.routeName:
+                        return SettingsScreen(
+                          userId: settings.arguments as String,
                         );
                       default:
                         return const SplashScreen();

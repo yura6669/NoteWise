@@ -8,7 +8,7 @@ import 'package:notewise/modules/home/widgets/no_internet_widget.dart';
 import 'package:notewise/modules/home/widgets/note_widget.dart';
 import 'package:notewise/modules/resorses/app_colors.dart';
 import 'package:notewise/modules/resorses/utils.dart';
-import 'package:notewise/modules/widgets/ink_wrapper.dart';
+import 'package:notewise/modules/widgets/custom_button.dart';
 
 class HomeScreen extends StatefulWidget {
   final UserModel user;
@@ -123,44 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          InkWrapper(
-            radius: 50,
-            onTap: _onUpdate,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryColor.withOpacity(0.5),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                  gradient: const LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    stops: [
-                      0.1,
-                      0.9,
-                    ],
-                    colors: [
-                      AppColors.secondaryColor,
-                      AppColors.primaryColor,
-                    ],
-                  )),
-              child: Text(
-                'Update',
-                style: TextStyle(
-                  fontSize: Utils.adaptiveWidth(context, 7),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto',
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
+          CustomButton(text: 'Update', onTap: _onUpdate),
         ],
       ),
     );
