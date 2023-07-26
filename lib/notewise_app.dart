@@ -6,6 +6,7 @@ import 'package:notewise/core/di/locator.dart';
 import 'package:notewise/core/models/user.dart';
 import 'package:notewise/firebase_options.dart';
 import 'package:notewise/modules/auth/auth_screen.dart';
+import 'package:notewise/modules/control_note/control_note_screen.dart';
 import 'package:notewise/modules/forgot_password/forgot_password_screen.dart';
 import 'package:notewise/modules/home/home_screen.dart';
 import 'package:notewise/modules/register/register_screen.dart';
@@ -72,6 +73,10 @@ class NoteWiseApp extends StatelessWidget {
                         );
                       case ForgotPasswordScreen.route:
                         return const ForgotPasswordScreen();
+                      case ControlNoteScreen.routeName:
+                        return ControlNoteScreen(
+                          args: settings.arguments as ControlNoteArgs,
+                        );
                       default:
                         return const SplashScreen();
                     }

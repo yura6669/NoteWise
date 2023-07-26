@@ -10,15 +10,17 @@ class Field extends StatelessWidget {
   final Icon prefixIcon;
   final bool obscureText;
   final Widget? suffixIcon;
-  const Field({
-    required this.controller,
-    required this.hintText,
-    required this.labelText,
-    required this.validator,
-    required this.prefixIcon,
-    this.obscureText = false,
-    this.suffixIcon,
-    super.key});
+  final int? maxLines;
+  const Field(
+      {required this.controller,
+      required this.hintText,
+      required this.labelText,
+      required this.validator,
+      required this.prefixIcon,
+      this.obscureText = false,
+      this.maxLines,
+      this.suffixIcon,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class Field extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         obscuringCharacter: '*',
+        maxLines: maxLines,
         style: TextStyle(
           fontSize: Utils.adaptiveWidth(context, 5),
           fontWeight: FontWeight.bold,
@@ -40,6 +43,7 @@ class Field extends StatelessWidget {
           color: Colors.black,
         ),
         decoration: InputDecoration(
+          alignLabelWithHint: true,
           fillColor: AppColors.background,
           filled: true,
           hintText: hintText,
@@ -62,7 +66,7 @@ class Field extends StatelessWidget {
             fontFamily: 'Roboto',
             color: AppColors.errorColor,
           ),
-          prefixIcon: prefixIcon,
+          prefix: prefixIcon,
           suffixIcon: suffixIcon,
           focusedBorder: InputBorder.none,
           enabledBorder: InputBorder.none,

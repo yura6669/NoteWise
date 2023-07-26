@@ -11,6 +11,15 @@ part 'home_state.dart';
 
 extension HomeBlocX on HomeBloc {
   void load(UserModel model) => add(_Load(model: model));
+
+  void deleteNote({
+    required NoteModel note,
+    required UserModel user,
+  }) =>
+      add(_DeleteNote(
+        note: note,
+        user: user,
+      ));
 }
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
@@ -18,6 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     required this.notesRepository,
   }) : super(const _Initial()) {
     on<_Load>(_onLoad);
+    on<_DeleteNote>(_deleteNote);
   }
 
   final INotesRepository notesRepository;
@@ -31,8 +41,37 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
       final user = event.model;
       final notes = await notesRepository.getNotes(user.id);
+      notes.sort((a, b) => b.lastUpdate.compareTo(a.lastUpdate));
       emit(_Loaded(
         user: user,
+        notes: notes,
+        greeting: _gretting(),
+      ));
+    } on FirebaseAuthException catch (e) {
+      emit(_Error(message: e.toString()));
+    } catch (e) {
+      emit(_Error(message: e.toString()));
+    }
+  }
+
+  Future<void> _deleteNote(
+    _DeleteNote event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(const _Loading());
+    try {
+      if (!await hasNetwork()) {
+        emit(const _NoInternet());
+        return;
+      }
+      await notesRepository.deleteNote(
+        userId: event.user.id,
+        id: event.note.id,
+      );
+      final notes = await notesRepository.getNotes(event.user.id);
+      notes.sort((a, b) => b.lastUpdate.compareTo(a.lastUpdate));
+      emit(_Loaded(
+        user: event.user,
         notes: notes,
         greeting: _gretting(),
       ));

@@ -13,3 +13,16 @@ class _Load extends HomeEvent {
     required this.model,
   });
 }
+
+class _DeleteNote extends HomeEvent {
+  final NoteModel note;
+  final UserModel user;
+
+  const _DeleteNote({
+    required this.note,
+    required this.user,
+  });
+
+  @override
+  List<Object> get props => [note, user];
+}

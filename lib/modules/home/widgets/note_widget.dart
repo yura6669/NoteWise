@@ -1,13 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:notewise/core/models/note.dart';
+import 'package:notewise/core/models/user.dart';
+import 'package:notewise/modules/control_note/control_note_screen.dart';
+import 'package:notewise/modules/home/bloc/home_bloc.dart';
 import 'package:notewise/modules/resorses/app_colors.dart';
 import 'package:notewise/modules/resorses/utils.dart';
 import 'package:notewise/modules/widgets/ink_wrapper.dart';
 
 class NoteWidget extends StatelessWidget {
   final NoteModel note;
-  const NoteWidget(this.note, {super.key});
+  final UserModel user;
+  final VoidCallback onUpdate;
+  const NoteWidget(
+      {required this.note,
+      required this.user,
+      required this.onUpdate,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +30,14 @@ class NoteWidget extends StatelessWidget {
         if (direction == DismissDirection.endToStart) {
           return await showDialog(
             context: context,
-            builder: (context) => _deleteNote(context),
+            builder: (dialogContext) =>
+                _deleteNote(context, dialogContext: dialogContext),
           );
         }
         return false;
       },
       child: InkWrapper(
-        onTap: () {},
+        onTap: () => _onChangeNote(context),
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -64,7 +77,7 @@ class NoteWidget extends StatelessWidget {
                       vertical: Utils.adaptiveHeight(context, 2)),
                   child: Column(
                     children: [
-                      _buildDate(context, note.id),
+                      _buildDate(context, note.lastUpdate),
                       SizedBox(height: Utils.adaptiveHeight(context, 3)),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -82,13 +95,14 @@ class NoteWidget extends StatelessWidget {
     );
   }
 
-  AlertDialog _deleteNote(BuildContext context) {
+  AlertDialog _deleteNote(BuildContext context,
+      {required BuildContext dialogContext}) {
     return AlertDialog(
       title: const Text('Delete Note'),
       content: const Text('Are you sure you want to delete this note?'),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Navigator.of(dialogContext).pop(false),
           child: Text(
             'No',
             style: TextStyle(
@@ -100,7 +114,10 @@ class NoteWidget extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () => {
+            Navigator.of(dialogContext).pop(true),
+            context.read<HomeBloc>().deleteNote(note: note, user: user),
+          },
           child: Text(
             'Yes',
             style: TextStyle(
@@ -127,10 +144,10 @@ class NoteWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDate(BuildContext context, String id) {
-    final date = DateTime.fromMillisecondsSinceEpoch(int.parse(id));
+  Widget _buildDate(BuildContext context, Timestamp timeStamp) {
+    final date = timeStamp.toDate();
     final String timeFormat =
-        '${date.year}/${date.month}/${date.day} ${date.hour}:${date.minute}:${date.second}';
+        DateFormat('dd/MM/yyyy - HH:mm:ss').format(date).toString();
     return Text(
       timeFormat,
       style: TextStyle(
@@ -153,5 +170,20 @@ class NoteWidget extends StatelessWidget {
         color: note.image != null ? Colors.white : AppColors.textColor,
       ),
     );
+  }
+
+  Future<void> _onChangeNote(BuildContext context) async {
+    final ControlNoteArgs args = ControlNoteArgs(
+      note: note,
+      user: user,
+    );
+    final result = await Navigator.pushNamed(
+      context,
+      ControlNoteScreen.routeName,
+      arguments: args,
+    );
+    if (result is bool && result) {
+      onUpdate.call();
+    }
   }
 }
